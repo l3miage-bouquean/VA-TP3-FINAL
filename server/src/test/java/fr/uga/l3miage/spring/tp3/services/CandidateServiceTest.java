@@ -42,7 +42,7 @@ public class CandidateServiceTest {
         ExamEntity examEntityNSI= ExamEntity
                 .builder()
                 .name("NSI")
-                .weight(3)
+                .weight(1)
                 .build();
 
         CandidateEvaluationGridEntity candidateEvaluationGridEntitySES = CandidateEvaluationGridEntity
