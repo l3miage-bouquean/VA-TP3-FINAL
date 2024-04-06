@@ -35,12 +35,14 @@ public class CandidateServiceTest {
         // Une note = un exam
         ExamEntity examEntitySES = ExamEntity
                 .builder()
+                .id(1L)
                 .name("SES")
                 .weight(1)
                 .build();
 
         ExamEntity examEntityNSI= ExamEntity
                 .builder()
+                .id(1L)
                 .name("NSI")
                 .weight(1)
                 .build();
@@ -67,8 +69,8 @@ public class CandidateServiceTest {
                 .build();
 
         //when
-        Double response = candidateService.getCandidateAverage(1L);
         when(candidateComponent.getCandidatById(anyLong())).thenReturn((candidateEntity));
+        Double response = candidateService.getCandidateAverage(1L);
 
         // then
         assertThat(response).isEqualTo(17.5);
