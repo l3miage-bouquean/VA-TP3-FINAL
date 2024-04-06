@@ -1,6 +1,7 @@
 package fr.uga.l3miage.spring.tp3.services;
 
 import fr.uga.l3miage.spring.tp3.components.CandidateComponent;
+import fr.uga.l3miage.spring.tp3.exceptions.rest.CandidateNotFoundRestException;
 import fr.uga.l3miage.spring.tp3.exceptions.technical.CandidateNotFoundException;
 import fr.uga.l3miage.spring.tp3.models.CandidateEntity;
 import fr.uga.l3miage.spring.tp3.models.CandidateEvaluationGridEntity;
@@ -14,6 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.util.Set;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -28,7 +30,7 @@ public class CandidateServiceTest {
     private CandidateComponent candidateComponent;
 
     @Test
-    void getCandidateAverage() throws CandidateNotFoundException {
+    void testCandidateAverageFound() throws CandidateNotFoundException {
         // given
         // Une note = un exam
         ExamEntity examEntitySES = ExamEntity
@@ -57,6 +59,7 @@ public class CandidateServiceTest {
 
         CandidateEntity candidateEntity = CandidateEntity
                 .builder()
+                .id(1L)
                 .firstname("Sett")
                 .lastname("Batman")
                 .email("bat@gmail.com")
@@ -70,6 +73,13 @@ public class CandidateServiceTest {
         // then
         assertThat(response).isEqualTo(17.5);
         verify(candidateComponent,times(1)).getCandidatById(any(Long.class));
+    }
+
+    @Test
+    void testCandidateAverageNotFound() throws CandidateNotFoundException {
+        // given
+        when(candidateComponent.getCandidatById(anyLong())).thenThrow(CandidateNotFoundException.class);
+        assertThrows(CandidateNotFoundRestException.class, () -> candidateService.getCandidateAverage(1L));
     }
 
 }
