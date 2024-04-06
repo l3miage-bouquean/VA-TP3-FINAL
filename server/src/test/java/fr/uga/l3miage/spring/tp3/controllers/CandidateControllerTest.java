@@ -38,7 +38,6 @@ public class CandidateControllerTest {
     @SpyBean
     private CandidateComponent candidateComponent;
 
-
     @AfterEach
     public void clear() {
         candidateRepository.deleteAll();
@@ -83,13 +82,13 @@ public class CandidateControllerTest {
                 .build();
 
         candidateRepository.save(candidateEntity);
-        Long candidateId = 1L; // Obtenez l'ID du candidat enregistré
+        Long candidateID = 1L;
 
         // when
-        ResponseEntity<Double> response = testRestTemplate.exchange("/api/candidates/{idCandidate}/average", HttpMethod.POST, new HttpEntity<>(null, headers), Double.class, candidateId);
+        ResponseEntity<Double> response = testRestTemplate.exchange("/api/candidates/{idCandidate}/average", HttpMethod.GET, new HttpEntity<>(null, headers), Double.class, candidateID);
 
         //then
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(candidateRepository.count()).isEqualTo(1);
         verify(candidateComponent, times(1)).getCandidatById(any(Long.class));
     }
