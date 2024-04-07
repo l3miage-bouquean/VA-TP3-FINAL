@@ -16,9 +16,4 @@ public class CandidateController implements CandidateEndpoints {
     public Double getCandidateAverage(Long candidateId) {
         return candidateService.getCandidateAverage(candidateId);
     }
-
-    @Override
-    public Boolean addStudentsToTestCenter(Long centerId, Set<Long> studentIds){
-        return candidateService.addStudentsToTestCenter(centerId, studentIds);
-    }
 }

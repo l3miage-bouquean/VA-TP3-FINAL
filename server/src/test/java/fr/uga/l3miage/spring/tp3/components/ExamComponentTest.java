@@ -2,6 +2,7 @@ package fr.uga.l3miage.spring.tp3.components;
 
 import fr.uga.l3miage.spring.tp3.exceptions.technical.ExamNotFoundException;
 import fr.uga.l3miage.spring.tp3.models.ExamEntity;
+import fr.uga.l3miage.spring.tp3.models.SkillEntity;
 import fr.uga.l3miage.spring.tp3.repositories.ExamRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 @AutoConfigureTestDatabase
@@ -31,7 +32,7 @@ public class ExamComponentTest {
     private ExamRepository examRepository;
 
     @Test
-    void getAllByIdNotFound() throws ExamNotFoundException{
+    void testGetAllByIdNotFound() throws ExamNotFoundException{
         // given
         when(examRepository.findById(anyLong())).thenReturn(Optional.empty());
         //then - when
@@ -40,7 +41,7 @@ public class ExamComponentTest {
     }
 
     @Test
-    void getAllByIdFound(){
+    void testGetAllByIdFound(){
         ExamEntity examEntity = ExamEntity.builder()
                 .id(1L)
                 .name("exam test")
@@ -51,5 +52,18 @@ public class ExamComponentTest {
         when(examRepository.findById(anyLong())).thenReturn(Optional.of(examEntity));
         //when - then
         assertDoesNotThrow(()->examComponent.getAllById(Set.of()));
+    }
+
+    @Test
+    void testGetAllCardioExam() {
+        // Given
+        SkillEntity skillEntity = SkillEntity.builder().name("cardio").build();
+        ExamEntity exam1 = ExamEntity.builder().name("NSI").skillEntities(Set.of(skillEntity)).build();
+        ExamEntity exam2 = ExamEntity.builder().name("SES").skillEntities(Set.of(skillEntity)).build();
+
+        when(examRepository.findAllBySkillEntitiesContaining(any(SkillEntity.class))).thenReturn(Set.of(exam1, exam2));
+
+        // When - then
+        assertDoesNotThrow(() -> examComponent.getAllCardioExam());
     }
 }

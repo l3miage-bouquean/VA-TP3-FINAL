@@ -1,6 +1,8 @@
 package fr.uga.l3miage.spring.tp3.components;
 
+import fr.uga.l3miage.spring.tp3.enums.SessionStatus;
 import fr.uga.l3miage.spring.tp3.exceptions.rest.CreationSessionRestException;
+import fr.uga.l3miage.spring.tp3.exceptions.technical.SessionNotFoundException;
 import fr.uga.l3miage.spring.tp3.models.CandidateEntity;
 import fr.uga.l3miage.spring.tp3.models.EcosSessionEntity;
 import fr.uga.l3miage.spring.tp3.models.EcosSessionProgrammationEntity;
@@ -64,5 +66,43 @@ public class SessionComponentTest {
         when(ecosSessionRepository.findById(anyLong())).thenReturn(Optional.of(ecosSessionEntity));
         //when - then
         assertDoesNotThrow(()->sessionComponent.createSession(ecosSessionEntity));
+    }
+
+
+    @Test
+    void testChangeStatusFromWrongPreviousState() {
+        // Given
+        EcosSessionProgrammationStepEntity ecosSessionProgrammationStepEntity = EcosSessionProgrammationStepEntity
+                .builder()
+                .code("101")
+                .description("Vas-y mec")
+                .build();
+
+        EcosSessionProgrammationEntity ecosSessionProgrammationEntity = EcosSessionProgrammationEntity
+                .builder()
+                .label("Label")
+                .ecosSessionProgrammationStepEntities(Set.of(ecosSessionProgrammationStepEntity))
+                .build();
+
+
+        EcosSessionEntity ecosSessionEntity = EcosSessionEntity
+                .builder()
+                .name("Session 1")
+                .status(SessionStatus.CREATED)
+                .ecosSessionProgrammationEntity(ecosSessionProgrammationEntity)
+                .build();
+        when(ecosSessionRepository.findById(ecosSessionEntity.getId())).thenReturn(Optional.of(ecosSessionEntity));
+
+        // Then
+        assertDoesNotThrow(()->sessionComponent.changeSessionStateToEvalEnded(anyLong()));
+    }
+
+    @Test
+    void testChangeStatusSessionNotFound() {
+        // Given
+        when(ecosSessionRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        // Then
+        assertThrows(SessionNotFoundException.class, () -> sessionComponent.changeSessionStateToEvalEnded(anyLong()));
     }
 }
