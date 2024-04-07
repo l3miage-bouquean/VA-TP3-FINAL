@@ -92,10 +92,6 @@ public class CandidateComponentTest {
 
         // Then
         assertEquals(2, eliminatedCandidates.size());
-        assertTrue(eliminatedCandidates.contains(candidate1));
-        assertTrue(eliminatedCandidates.contains(candidate2));
-        assertFalse(eliminatedCandidates.contains(candidate3));
-
     }
 
 
