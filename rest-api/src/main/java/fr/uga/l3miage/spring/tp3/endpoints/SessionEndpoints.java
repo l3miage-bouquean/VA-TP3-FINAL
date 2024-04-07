@@ -32,7 +32,4 @@ public interface SessionEndpoints {
     SessionResponse changeSessionStateToEvalEnded(@PathVariable(name = "idSession") Long sessionId);
 
 
-
-
-
 }
