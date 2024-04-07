@@ -2,6 +2,7 @@ package fr.uga.l3miage.spring.tp3.endpoints;
 
 import fr.uga.l3miage.spring.tp3.request.SessionCreationRequest;
 import fr.uga.l3miage.spring.tp3.responses.SessionResponse;
+import fr.uga.l3miage.spring.tp3.responses.enums.SessionStatus;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -22,6 +23,15 @@ public interface SessionEndpoints {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/create")
     SessionResponse createSession(@RequestBody SessionCreationRequest request);
+
+    @Operation(description = "Changer l'état d'une session de EVAL_STARTED à EVAL_ENDED")
+    @ApiResponse(responseCode = "200",description = "Le changement de status de la session a bien été crée")
+    @ApiResponse(responseCode = "409" ,description = "Le changement de status de la session a échoué", content = @Content(schema = @Schema(implementation = String.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/{idSession}/status")
+    SessionResponse changeSessionStateToEvalEnded(@PathVariable(name = "idSession") Long sessionId);
+
+
 
 
 
