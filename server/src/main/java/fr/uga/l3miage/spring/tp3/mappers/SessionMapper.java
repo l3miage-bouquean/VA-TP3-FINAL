@@ -6,11 +6,14 @@ import fr.uga.l3miage.spring.tp3.models.EcosSessionProgrammationStepEntity;
 import fr.uga.l3miage.spring.tp3.request.SessionCreationRequest;
 import fr.uga.l3miage.spring.tp3.request.SessionProgrammationCreationRequest;
 import fr.uga.l3miage.spring.tp3.request.SessionProgrammationStepCreationRequest;
+import fr.uga.l3miage.spring.tp3.responses.CandidateEvaluationResponse;
 import fr.uga.l3miage.spring.tp3.responses.EcosSessionProgrammationResponse;
 import fr.uga.l3miage.spring.tp3.responses.EcosSessionProgrammationStepResponse;
 import fr.uga.l3miage.spring.tp3.responses.SessionResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+
+import java.util.Set;
 
 @Mapper(uses = {ExamMapper.class})
 public interface SessionMapper {
@@ -25,6 +28,8 @@ public interface SessionMapper {
     EcosSessionProgrammationStepEntity toEntity(SessionProgrammationStepCreationRequest request);
 
     SessionResponse toResponse(EcosSessionEntity entity);
+
+    Set<CandidateEvaluationResponse> toResponse1(EcosSessionEntity entity);
 
     EcosSessionProgrammationResponse toResponse(EcosSessionProgrammationEntity entity);
 

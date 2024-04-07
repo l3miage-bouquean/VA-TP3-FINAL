@@ -13,6 +13,7 @@ import fr.uga.l3miage.spring.tp3.models.EcosSessionProgrammationEntity;
 import fr.uga.l3miage.spring.tp3.models.EcosSessionProgrammationStepEntity;
 import fr.uga.l3miage.spring.tp3.models.ExamEntity;
 import fr.uga.l3miage.spring.tp3.request.SessionCreationRequest;
+import fr.uga.l3miage.spring.tp3.responses.CandidateEvaluationResponse;
 import fr.uga.l3miage.spring.tp3.responses.SessionResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -51,10 +52,10 @@ public class SessionService {
         }
     }
 
-    public SessionResponse changeSessionStateToEvalEnded(Long sessionId)  {
+    public Set<CandidateEvaluationResponse> changeSessionStateToEvalEnded(Long sessionId)  {
         try {
             EcosSessionEntity ecosSessionEntity = sessionComponent.changeSessionStateToEvalEnded(sessionId);
-            return sessionMapper.toResponse(ecosSessionEntity);
+            return sessionMapper.toResponse1(ecosSessionEntity);
         }catch (RuntimeException e){
             String requestUri = "/api/sessions/" + sessionId + "/status";
             throw new ChangeSessionRestException(e.getMessage(), requestUri, null);

@@ -1,6 +1,7 @@
 package fr.uga.l3miage.spring.tp3.endpoints;
 
 import fr.uga.l3miage.spring.tp3.request.SessionCreationRequest;
+import fr.uga.l3miage.spring.tp3.responses.CandidateEvaluationResponse;
 import fr.uga.l3miage.spring.tp3.responses.SessionResponse;
 import fr.uga.l3miage.spring.tp3.responses.enums.SessionStatus;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,6 +12,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Set;
 
 @Tag(name = "Gestion des session")
 @RestController
@@ -26,10 +29,11 @@ public interface SessionEndpoints {
 
     @Operation(description = "Changer l'état d'une session de EVAL_STARTED à EVAL_ENDED")
     @ApiResponse(responseCode = "200",description = "Le changement de status de la session a bien été crée")
+    @ApiResponse(responseCode = "404" ,description = "Not Found", content = @Content(schema = @Schema(implementation = String.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
     @ApiResponse(responseCode = "409" ,description = "Le changement de status de la session a échoué", content = @Content(schema = @Schema(implementation = String.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{idSession}/status")
-    SessionResponse changeSessionStateToEvalEnded(@PathVariable(name = "idSession") Long sessionId);
+    Set<CandidateEvaluationResponse> changeSessionStateToEvalEnded(@PathVariable(name = "idSession") Long sessionId);
 
 
 }
