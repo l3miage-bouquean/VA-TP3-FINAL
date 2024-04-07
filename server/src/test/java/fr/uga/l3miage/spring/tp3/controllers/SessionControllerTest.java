@@ -16,6 +16,7 @@ import fr.uga.l3miage.spring.tp3.repositories.EcosSessionRepository;
 import fr.uga.l3miage.spring.tp3.request.SessionCreationRequest;
 import fr.uga.l3miage.spring.tp3.request.SessionProgrammationCreationRequest;
 import fr.uga.l3miage.spring.tp3.request.SessionProgrammationStepCreationRequest;
+import fr.uga.l3miage.spring.tp3.responses.CandidateEvaluationResponse;
 import fr.uga.l3miage.spring.tp3.responses.EcosSessionProgrammationResponse;
 import fr.uga.l3miage.spring.tp3.responses.EcosSessionProgrammationStepResponse;
 import fr.uga.l3miage.spring.tp3.responses.SessionResponse;
@@ -27,9 +28,11 @@ import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWeb
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -118,6 +121,27 @@ public class SessionControllerTest {
         //then
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 
+    }
+
+    @Test
+    void changeStatus_Success() {
+        // Given
+        final HttpHeaders headers = new HttpHeaders();
+
+        // When
+        final Map<String, Object> urlParams = new HashMap<>();
+        urlParams.put("idSession", 1L);
+        ResponseEntity<List<CandidateEvaluationResponse>> response = testRestTemplate.exchange(
+                "/api/session/{idSession}/changeStatus",
+                HttpMethod.PUT,
+                new HttpEntity<>(null, headers),
+                new ParameterizedTypeReference<List<CandidateEvaluationResponse>>() {},
+                urlParams
+        );
+
+        // Then
+        assertThat(response.getStatusCodeValue()).isEqualTo(200);
+        // Add more assertions based on the expected behavior
     }
 
 
