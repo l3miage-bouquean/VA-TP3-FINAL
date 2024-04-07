@@ -10,7 +10,6 @@ import fr.uga.l3miage.spring.tp3.models.TestCenterEntity;
 import fr.uga.l3miage.spring.tp3.repositories.CandidateRepository;
 import fr.uga.l3miage.spring.tp3.repositories.TestCenterRepository;
 
-import fr.uga.l3miage.spring.tp3.request.TestCenterAddStudentsRequest;
 import fr.uga.l3miage.spring.tp3.request.TestCenterRequest;
 import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.AfterEach;
